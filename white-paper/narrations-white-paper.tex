@@ -1,0 +1,65 @@
+%!TEX program = lualatex
+\documentclass[jou]{apa6}
+
+% Load and set up packages
+\usepackage{fontspec}
+\usepackage{tikz}
+\usetikzlibrary{graphs}
+\usepackage[
+    footnotes,
+    definitionLists,
+    hashEnumerators,
+    smartEllipses,
+    hybrid
+]{markdown}
+
+
+%%%% Set up title, authors, etc.
+\title{Methodology of narrative analysis workpackage for \textsf{SMART} project}
+\shorttitle{SMART: narrative analysis methodology}
+\author{
+    Andrzej Nowak, \\
+    Magda Roszczyńska-Kurasińska, \\
+    Wojciech Borkowski, \\
+    Karolina Ziembowicz, \\
+    Mikołaj Biesaga, \\
+    Szymon Talaga
+}
+\affiliation{Robert Zajonc Institute for Social Studies \\ University of Warsaw}
+\abstract{
+    This white paper provides a self-contained, high-level overview of the
+    methodology of narrative analysis that is the subject of workpackage ???.
+    The goal is to detect and describe most prevalent narratives concerning
+    social and policy issues, especially in relation to EU, as perceived through
+    discourse in leading weekly opinion magazines in various european countries.
+    The analysis will combine modern quantitative approaches
+    (collection of big data from social networks and unsupervised machine learning)
+    with qualitative insights in order to produce in-depth and actionable results.
+}
+
+\begin{document}
+\maketitle
+
+% Intro section
+\markdownInput{parts/1_intro.md}
+
+
+% # Data collection
+
+% Narratives will be analyzed at the level of discourse of weekly opinion magazines.
+% Thus, the first stage of the research will be dedicated to building.
+
+
+% \begin{tikzpicture}
+%     \graph [
+%       grow right=6em,
+%       branch down=6em,
+%       nodes={draw, rectangle, rounded corners}
+%     ] {
+%       a -- b -- c,
+%       d -- e -- f,
+%       a -- d, a -- e
+%     };
+% \end{tikzpicture}
+
+\end{document}
