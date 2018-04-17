@@ -1,21 +1,74 @@
 %!TEX program = lualatex
-\documentclass[jou]{apa6}
-
-% Load and set up packages
+\documentclass[
+    doc,            % doc | man | jou
+    floatsintext    % if not used floats are placed after bibliography
+]{apa6}
+\usepackage[american]{babel}
 \usepackage{fontspec}
-\usepackage{tikz}
-\usetikzlibrary{graphs}
+\usepackage{csquotes}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage[style=apa,sortcites=true,sorting=nyt,backend=biber]{biblatex}
+\DeclareLanguageMapping{american}{american-apa}
+\addbibresource{literature.bib}
+\usepackage[all]{nowidow}
 \usepackage[
-    footnotes,
+    hidelinks=true,
+    colorlinks=true,
+    urlcolor=blue,
+    linkcolor=blue,
+    citecolor=black
+]{hyperref}
+\usepackage[
+    inlineFootnotes,
     definitionLists,
-    hashEnumerators,
     smartEllipses,
-    hybrid
+    hybrid,
+    citations
 ]{markdown}
+\markdownSetup{renderers={
+  link = {\href{#2}{#1}}
+}}
+\usepackage{tikz}
+\usetikzlibrary{
+    arrows,
+    shapes,
+    positioning,
+    shadows,
+    trees,
+    calc
+}
+\tikzset{
+  basic/.style = {
+      draw,
+      text width=2cm,
+      drop shadow,
+      font=\sffamily,
+      rectangle,
+      fill=lightgray!30,
+      align=center
+  },
+  round/.style = {
+    basic,
+    rounded corners=2pt,
+    thin
+  },
+  simple/.style = {
+      basic,
+      thin,
+      text width=3em
+  },
+  plain/.style = {
+      draw=none
+  }
+}
 
 
-%%%% Set up title, authors, etc.
-\title{Methodology of narrative analysis workpackage for \textsf{SMART} project}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  Set up title, authors, etc.  %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{Methodology of narrative analysis sub-task for \textsf{SMART} project}
 \shorttitle{SMART: narrative analysis methodology}
 \author{
     Andrzej Nowak, \\
@@ -25,13 +78,22 @@
     Mikołaj Biesaga, \\
     Szymon Talaga
 }
-\affiliation{Robert Zajonc Institute for Social Studies \\ University of Warsaw}
+\leftheader{
+    Nowak,
+    Roszczyńska-Kurasińska,
+    Borkowski,
+    Ziembowicz,
+    Biesaga,
+    Talaga
+}
+\affiliation{The Robert Zajonc Institute for Social Studies \\ University of Warsaw}
 \abstract{
     This white paper provides a self-contained, high-level overview of the
-    methodology of narrative analysis that is the subject of workpackage ???.
+    methodology of narrative analysis that is the subject of
+    Workpackage 2 / Sub-Task 2.6.2.
     The goal is to detect and describe most prevalent narratives concerning
     social and policy issues, especially in relation to EU, as perceived through
-    discourse in leading weekly opinion magazines in various european countries.
+    discourse in leading weekly opinion magazines in various European countries.
     The analysis will combine modern quantitative approaches
     (collection of big data from social networks and unsupervised machine learning)
     with qualitative insights in order to produce in-depth and actionable results.
@@ -40,26 +102,92 @@
 \begin{document}
 \maketitle
 
-% Intro section
+%%%%%%%%%%%%%
+%%% Intro %%%
+%%%%%%%%%%%%%
 \markdownInput{parts/1_intro.md}
 
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Data collection %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+\markdownInput{parts/2_data-collection.md}
+\vspace{2em}
+% Data collection process diagram
 
-% # Data collection
+% TikZ styles are set in the preamble
+% after TikZ load usepackage directive.
+\begin{figure}[H]
+\begin{center}
+\begin{tikzpicture}[
+    level 1/.style={sibling distance=40mm},
+    edge from parent/.style={->,draw},
+    >=latex
+]
+    % root of the the initial tree, level 1
+    \node[round] {Country}
+    % The first level, as children of the initial tree
+    child {node[round] (m1) {Actor $1$}}
+    child {node[plain] (mi) {$\boldsymbol{\ldots}$} edge from parent[draw=none]}
+    child {node[round] (mn) {Actor $n$}};
 
-% Narratives will be analyzed at the level of discourse of weekly opinion magazines.
-% Thus, the first stage of the research will be dedicated to building.
+    % The second level, relatively positioned nodes
+    \begin{scope}[]
 
+        % Posts of M1
+        \node[simple] [below of = m1] (m1p1) {Post $1$};
+        \node[simple] [right of = m1p1, xshift=2em] (m1t1) {Text $1$};
+        \draw[->] (m1p1) edge (m1t1);
+        \node[plain] [below of = m1p1, xshift=2.3em] (m1pi) {$\boldsymbol{\vdots}$};
+        \node[simple] [below of = m1p1, yshift=-2.5em] (m1pn) {Post $k$};
+        \node[simple] [right of = m1pn, xshift=2em] (m1tn) {Text $k$};
+        \draw[->] (m1pn) edge (m1tn);
+        \foreach \value in {1,n}
+            \draw[->] (m1.195) |- (m1p\value.west);
+        % Posts and texts of Mn
+        \node[simple] [below of = mn] (mnp1) {Post $1$};
+        \node[simple] [right of = mnp1, xshift=2em] (mnt1) {Text $1$};
+        \draw[->] (mnp1) edge (mnt1);
+        \node[plain] [below of = mnp1, xshift=2.3em] (mnpi) {$\boldsymbol{\vdots}$};
+        \node[simple] [below of = mnp1, yshift=-2.5em] (mnpn) {Post $l$};
+        \node[simple] [right of = mnpn, xshift=2em] (mntn) {Text $l$};
+        \draw[->] (mnpn) edge (mntn);
+        \foreach \value in {1,n}
+            \draw[->] (mn.195) |- (mnp\value.west);
 
-% \begin{tikzpicture}
-%     \graph [
-%       grow right=6em,
-%       branch down=6em,
-%       nodes={draw, rectangle, rounded corners}
-%     ] {
-%       a -- b -- c,
-%       d -- e -- f,
-%       a -- d, a -- e
-%     };
-% \end{tikzpicture}
+        % Actor discourse sets
+        \node[plain] [below of = m1pn, xshift=2em] (a1to) {$\Downarrow$};
+        \node[round] [below of = a1to] (a1) {Actor set $1$};
+        \node[plain] [below of = mnpn, xshift=2em] (anto) {$\Downarrow$};
+        \node[round] [below of = anto] (an) {Actor set $n$};
+
+        % Country corpus node
+        \node[round] [yshift=-4em] (corpus) at ($(a1)!0.5!(an)$) {Country corpus};
+        \draw[->] (a1) edge (corpus);
+        \draw[->] (an) edge (corpus);
+
+    \end{scope}
+
+\end{tikzpicture}
+\end{center}
+\caption{
+    Data collection process for a single country.
+    A country corpus is composed of several \textit{actor sets}
+    which consist of post and articles published by a specific actor.
+}
+\end{figure}
+
+%%%%%%%%%%%%%%%%
+%%% Analysis %%%
+%%%%%%%%%%%%%%%%
+\markdownInput{parts/3_analysis.md}
+
+%%%%%%%%%%%%%%%
+%%% Summary %%%
+%%%%%%%%%%%%%%%
+\markdownInput{parts/4_summary.md}
+
+% Bibliography
+\newpage
+\printbibliography
 
 \end{document}
